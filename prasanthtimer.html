@@ -1,0 +1,66 @@
+<Html>
+<head>
+
+<div id="test"><canvas id="mycanvas" width=200 height=100 style= "border:2px solid #000000;"></div>
+</canvas>
+<script language=javascript>
+	var c=document.getElementById("mycanvas");
+	var ctx=c.getContext("2d")
+	ctx.font="50px Arial";	
+	function time(){
+		var m=document.getElementById("minutes").value;
+		var s=document.getElementById("seconds").value;
+		ctx.clearRect(0,0,200,100)
+		ctx.fillText(m,40,60)
+		ctx.fillText(":",100,60)
+		ctx.fillText(s,120,60)	
+	}
+	function timer(){
+		ctx.clearRect(0,0,200,100)
+		m=document.getElementById("minutes").value;
+		s=document.getElementById("seconds").value;
+		m=parseInt(m)
+		s=parseInt(s)
+		timerid=window.setInterval(pa,1000);
+	}
+		function pa(){
+			if(s>=0 && m>=0){
+				ctx.clearRect(0,0,200,100)
+				ctx.fillText(m,40,60)
+				ctx.fillText(":",100,60)
+				ctx.fillText(s,120,60)
+				s=s-1
+			}else if(m>0){
+				s=59
+				m=m-1
+				ctx.clearRect(0,0,200,100)
+				ctx.fillText(m,40,60)
+				ctx.fillText(":",100,60)
+				ctx.fillText(s,120,60)
+				s=s-1
+			}else{
+				alert("....TIME OUT....")
+				clearInterval(timerid)
+			}
+		}
+	
+	function stop(){
+		window.clearInterval(timerid);
+	}
+
+
+</script>
+
+</head>
+<body>
+
+
+		Initial Value:<input type="text" id="minutes"> <input type="text" id="seconds">
+		<input type="button" value="SET" onclick="time()">
+		<input type="button" value="START" onclick="timer()">
+		<input type="button" value="STOP" onclick="stop()">
+
+
+
+</body>
+</html>
