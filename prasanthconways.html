@@ -1,0 +1,105 @@
+
+PUSH START FOR THE GAME
+<html> 
+<head> 
+<title></title> 
+<script> 
+	function present(turns,width,height) {
+		board = new Array(height);
+		for (var x = 0; x < height; x++) {
+			board[x] = new Array(width);
+			for (var y = 0; y < width; y++) {
+				board[x][y] = Math.round(Math.random());
+			}
+		}
+	}
+ 
+	function nextgen() {
+		boardNext = new Array(board.length);
+		for (var i = 0; i < board.length; i++) {
+			this.boardNext[i] = new Array(board[i].length);
+		}
+		for (var x = 0; x < board.length; x++) {
+			for (var y = 0; y < board[x].length; y++) {
+				var n = 0;
+				for (var dx = -1; dx <= 1; dx++) {
+					for (var dy = -1; dy <= 1; dy++) {
+						if ( dx == 0 && dy == 0){}
+						else if (typeof board[x+dx] !== 'undefined'
+								&& typeof board[x+dx][y+dy] !== 'undefined'
+								&& board[x+dx][y+dy]) {
+							n++;
+						}
+					}	
+				}
+				var c = board[x][y];
+				switch (n) {
+					case 0:
+					case 1:
+						c = 0;
+						break;
+					case 2:
+						break; 
+					case 3:
+						c = 1;
+						break;
+					default:
+						c = 0;
+				}
+				boardNext[x][y] = c;
+			}
+		}
+		board = boardNext.slice();
+	}
+ 
+	function print(ctx,w,h) {
+		if (!w)
+			w = 1;
+		if (!h)
+			h = 1;
+		for (var x = 0; x < board.length; x++) {
+			var l = "";
+			for (var y = 0; y < board[x].length; y++) {
+				if (board[x][y])
+					ctx.fillStyle = "grey";
+				else
+					ctx.fillStyle = "black";
+				ctx.fillRect(y*h,x*w,h,w);
+			}
+		}
+	}
+ 
+	function start(ctx,w,h) {
+		for (var t = 0; t < turns; t++) {
+			print(ctx,w,h);
+			nextgen()
+		}
+	}
+ 
+ 
+function init() {
+	document.title = "Conway's Game of Life";
+	present(null,8,8);
+	canvas = document.getElementById('random');
+	ctx = canvas.getContext('2d');
+	setid=setInterval(run,250);
+}
+ 
+function run() {
+	print(ctx,30,30);
+	nextgen()
+}
+function stop(){
+	clearInterval(setid);
+}
+ 
+</script> 
+</head> 
+<body> 
+		<br> 
+		<canvas id="random" width="200" height="200" style="border:2px solid #000000;"> 
+		</canvas><br>
+		<input type="button" name="btn" value="Start" onclick="init()";>
+		<input type="button" name="btn" value="Stop" onclick="stop()";> 
+</body> 
+</html>
